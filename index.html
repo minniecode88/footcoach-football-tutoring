@@ -428,6 +428,193 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .modal-title {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Payment Form */
+        .payment-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover, .payment-method.selected {
+            border-color: var(--secondary);
+            background-color: rgba(30, 144, 255, 0.1);
+        }
+        
+        .payment-method i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        /* Booking calendar */
+        .booking-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-header {
+            grid-column: span 7;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .calendar-cell {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #eee;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .calendar-cell:hover {
+            background-color: var(--light);
+        }
+        
+        .calendar-cell.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .calendar-cell.unavailable {
+            background-color: #f8f8f8;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Time slots */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #eee;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .time-slot:hover {
+            background-color: var(--light);
+        }
+        
+        .time-slot.selected {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .time-slot.unavailable {
+            background-color: #f8f8f8;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--success);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(150%);
+            transition: transform 0.3s ease-out;
+            z-index: 1001;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
         /* Responsive Styles */
         @media (max-width: 768px) {
             .header-container {
@@ -437,6 +624,12 @@
             
             nav ul {
                 margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
             }
             
             .hero h1 {
@@ -457,6 +650,20 @@
                 width: 100%;
                 border-radius: 0;
             }
+            
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -474,8 +681,8 @@
                 </ul>
             </nav>
             <div class="auth-buttons">
-                <button class="btn btn-outline">Log In</button>
-                <button class="btn btn-primary">Sign Up</button>
+                <button class="btn btn-outline" id="loginBtn">Log In</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
             </div>
         </div>
     </header>
@@ -486,8 +693,8 @@
             <h1>Find Your Perfect Football Coach</h1>
             <p>Connect with expert football coaches for personalized training sessions. Improve your skills, tactics, and performance with 1-on-1 coaching.</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary">Find a Coach</button>
-                <button class="btn btn-light">Become a Coach</button>
+                <button class="btn btn-primary" id="findCoachHeroBtn">Find a Coach</button>
+                <button class="btn btn-light" id="becomeCoachHeroBtn">Become a Coach</button>
             </div>
         </div>
     </section>
@@ -497,16 +704,16 @@
         <div class="container">
             <h2 class="section-title">Find Your Ideal Coach</h2>
             <div class="search-box">
-                <input type="text" class="search-input" placeholder="Search by skill, location, or coach name...">
-                <button class="search-btn">Search</button>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search by skill, location, or coach name...">
+                <button class="search-btn" id="searchBtn">Search</button>
             </div>
             <div class="filter-options">
-                <button class="filter-btn active">All Coaches</button>
-                <button class="filter-btn">Striking</button>
-                <button class="filter-btn">Defending</button>
-                <button class="filter-btn">Goalkeeping</button>
-                <button class="filter-btn">Fitness</button>
-                <button class="filter-btn">Tactics</button>
+                <button class="filter-btn active" data-filter="all">All Coaches</button>
+                <button class="filter-btn" data-filter="striking">Striking</button>
+                <button class="filter-btn" data-filter="defending">Defending</button>
+                <button class="filter-btn" data-filter="goalkeeping">Goalkeeping</button>
+                <button class="filter-btn" data-filter="fitness">Fitness</button>
+                <button class="filter-btn" data-filter="tactics">Tactics</button>
             </div>
         </div>
     </section>
@@ -515,9 +722,9 @@
     <section class="coaches-section">
         <div class="container">
             <h2 class="section-title">Featured Coaches</h2>
-            <div class="coaches-grid">
+            <div class="coaches-grid" id="coachesGrid">
                 <!-- Coach 1 -->
-                <div class="coach-card">
+                <div class="coach-card" data-specialty="striking" data-name="James Wilson">
                     <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
                     <div class="coach-info">
                         <h3 class="coach-name">James Wilson</h3>
@@ -532,14 +739,14 @@
                         </div>
                         <p class="coach-price">$45 / hour</p>
                         <div class="coach-actions">
-                            <button class="btn btn-outline">View Profile</button>
-                            <button class="btn btn-primary">Book Now</button>
+                            <button class="btn btn-outline view-profile" data-coach="James Wilson">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="James Wilson">Book Now</button>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Coach 2 -->
-                <div class="coach-card">
+                <div class="coach-card" data-specialty="defending" data-name="Marcus Johnson">
                     <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
                     <div class="coach-info">
                         <h3 class="coach-name">Marcus Johnson</h3>
@@ -554,14 +761,14 @@
                         </div>
                         <p class="coach-price">$38 / hour</p>
                         <div class="coach-actions">
-                            <button class="btn btn-outline">View Profile</button>
-                            <button class="btn btn-primary">Book Now</button>
+                            <button class="btn btn-outline view-profile" data-coach="Marcus Johnson">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="Marcus Johnson">Book Now</button>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Coach 3 -->
-                <div class="coach-card">
+                <div class="coach-card" data-specialty="goalkeeping" data-name="Sarah Martinez">
                     <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
                     <div class="coach-info">
                         <h3 class="coach-name">Sarah Martinez</h3>
@@ -576,8 +783,74 @@
                         </div>
                         <p class="coach-price">$52 / hour</p>
                         <div class="coach-actions">
-                            <button class="btn btn-outline">View Profile</button>
-                            <button class="btn btn-primary">Book Now</button>
+                            <button class="btn btn-outline view-profile" data-coach="Sarah Martinez">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="Sarah Martinez">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coach 4 -->
+                <div class="coach-card" data-specialty="fitness" data-name="David Chen">
+                    <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="coach-info">
+                        <h3 class="coach-name">David Chen</h3>
+                        <p class="coach-specialty">Fitness & Conditioning</p>
+                        <div class="coach-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(37 reviews)</span>
+                        </div>
+                        <p class="coach-price">$42 / hour</p>
+                        <div class="coach-actions">
+                            <button class="btn btn-outline view-profile" data-coach="David Chen">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="David Chen">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coach 5 -->
+                <div class="coach-card" data-specialty="tactics" data-name="Emma Wright">
+                    <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="coach-info">
+                        <h3 class="coach-name">Emma Wright</h3>
+                        <p class="coach-specialty">Tactics & Strategy</p>
+                        <div class="coach-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>(51 reviews)</span>
+                        </div>
+                        <p class="coach-price">$48 / hour</p>
+                        <div class="coach-actions">
+                            <button class="btn btn-outline view-profile" data-coach="Emma Wright">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="Emma Wright">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coach 6 -->
+                <div class="coach-card" data-specialty="striking" data-name="Michael Torres">
+                    <div class="coach-image" style="background-image: url('https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="coach-info">
+                        <h3 class="coach-name">Michael Torres</h3>
+                        <p class="coach-specialty">Striking & Ball Control</p>
+                        <div class="coach-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(29 reviews)</span>
+                        </div>
+                        <p class="coach-price">$40 / hour</p>
+                        <div class="coach-actions">
+                            <button class="btn btn-outline view-profile" data-coach="Michael Torres">View Profile</button>
+                            <button class="btn btn-primary book-now" data-coach="Michael Torres">Book Now</button>
                         </div>
                     </div>
                 </div>
@@ -672,7 +945,7 @@
             <h2 class="cta-title">Ready to Improve Your Game?</h2>
             <p>Join thousands of players who have elevated their skills with personalized coaching.</p>
             <div class="cta-buttons">
-                <button class="btn btn-light">Find Your Coach</button>
+                <button class="btn btn-light" id="ctaFindCoachBtn">Find Your Coach</button>
                 <button class="btn btn-outline">Learn More</button>
             </div>
         </div>
@@ -724,47 +997,705 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="loginModal">&times;</span>
+            <h2 class="modal-title">Log In to Your Account</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Log In</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px;">
+                Don't have an account? <a href="#" id="switchToSignup" style="color: var(--secondary);">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="signupModal">&times;</span>
+            <h2 class="modal-title">Create an Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="userType">I am a:</label>
+                    <select id="userType" required>
+                        <option value="">Select option</option>
+                        <option value="player">Player</option>
+                        <option value="coach">Coach</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px;">
+                Already have an account? <a href="#" id="switchToLogin" style="color: var(--secondary);">Log in</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="bookingModal">&times;</span>
+            <h2 class="modal-title">Book a Session with <span id="coachName"></span></h2>
+            <div class="form-group">
+                <label>Select Date:</label>
+                <div class="booking-calendar">
+                    <div class="calendar-header">September 2023</div>
+                    <div class="calendar-cell">Sun</div>
+                    <div class="calendar-cell">Mon</div>
+                    <div class="calendar-cell">Tue</div>
+                    <div class="calendar-cell">Wed</div>
+                    <div class="calendar-cell">Thu</div>
+                    <div class="calendar-cell">Fri</div>
+                    <div class="calendar-cell">Sat</div>
+                    
+                    <!-- Calendar days will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Select Time:</label>
+                <div class="time-slots">
+                    <div class="time-slot" data-time="09:00">9:00 AM</div>
+                    <div class="time-slot" data-time="10:00">10:00 AM</div>
+                    <div class="time-slot" data-time="11:00">11:00 AM</div>
+                    <div class="time-slot" data-time="13:00">1:00 PM</div>
+                    <div class="time-slot" data-time="14:00">2:00 PM</div>
+                    <div class="time-slot" data-time="15:00">3:00 PM</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="sessionType">Session Type:</label>
+                <select id="sessionType">
+                    <option value="individual">Individual (1 hour)</option>
+                    <option value="group">Group Session (1.5 hours)</option>
+                    <option value="intensive">Intensive Training (2 hours)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="sessionNotes">Notes for the coach (optional):</label>
+                <textarea id="sessionNotes" placeholder="What would you like to focus on during this session?"></textarea>
+            </div>
+            
+            <button id="proceedToPayment" class="btn btn-primary" style="width: 100%;">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="paymentModal">&times;</span>
+            <h2 class="modal-title">Complete Your Booking</h2>
+            
+            <div class="booking-summary">
+                <h3>Booking Summary</h3>
+                <p><strong>Coach:</strong> <span id="paymentCoachName"></span></p>
+                <p><strong>Date & Time:</strong> <span id="paymentDateTime"></span></p>
+                <p><strong>Session Type:</strong> <span id="paymentSessionType"></span></p>
+                <p><strong>Total Amount:</strong> $<span id="paymentAmount"></span></p>
+            </div>
+            
+            <div class="payment-form">
+                <h3>Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-method" data-method="card">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit Card</span>
+                    </div>
+                    <div class="payment-method" data-method="paypal">
+                        <i class="fab fa-paypal"></i>
+                        <span>PayPal</span>
+                    </div>
+                    <div class="payment-method" data-method="bank">
+                        <i class="fas fa-university"></i>
+                        <span>Bank Transfer</span>
+                    </div>
+                </div>
+                
+                <div id="cardPaymentForm">
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-group" style="display: flex; gap: 15px;">
+                        <div style="flex: 1;">
+                            <label for="cardExpiry">Expiry Date</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/YY">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="cardCVC">CVC</label>
+                            <input type="text" id="cardCVC" placeholder="123">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" id="cardName">
+                    </div>
+                </div>
+                
+                <button id="confirmPayment" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="profileModal">&times;</span>
+            <div id="profileContent">
+                <!-- Profile content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Become a Coach Modal -->
+    <div class="modal" id="becomeCoachModal">
+        <div class="modal-content">
+            <span class="close-modal" data-modal="becomeCoachModal">&times;</span>
+            <h2 class="modal-title">Become a FootCoach</h2>
+            <p>Join our platform as a coach and start sharing your expertise with football players around the world.</p>
+            
+            <form id="coachApplicationForm">
+                <div class="form-group">
+                    <label for="coachName">Full Name</label>
+                    <input type="text" id="coachName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coachEmail">Email Address</label>
+                    <input type="email" id="coachEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coachSpecialty">Coaching Specialty</label>
+                    <select id="coachSpecialty" required>
+                        <option value="">Select your specialty</option>
+                        <option value="striking">Striking & Finishing</option>
+                        <option value="defending">Defending</option>
+                        <option value="goalkeeping">Goalkeeping</option>
+                        <option value="fitness">Fitness & Conditioning</option>
+                        <option value="tactics">Tactics & Strategy</option>
+                        <option value="technical">Technical Skills</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coachExperience">Years of Experience</label>
+                    <input type="number" id="coachExperience" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coachCredentials">Credentials/Certifications</label>
+                    <textarea id="coachCredentials" placeholder="List any relevant certifications, licenses, or qualifications"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coachBackground">Coaching Background</label>
+                    <textarea id="coachBackground" placeholder="Tell us about your coaching experience and philosophy"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>
+
     <script>
-        // Simple JavaScript for interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Filter buttons
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    // In a real implementation, this would filter the coaches
-                    console.log('Filter selected: ' + this.textContent);
-                });
+        // Coach data
+        const coaches = [
+            {
+                name: "James Wilson",
+                specialty: "Striking & Finishing",
+                rating: 4.5,
+                reviews: 42,
+                price: 45,
+                image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Former professional striker with 10+ years of experience. Specialized in shooting techniques, positioning, and finishing. Trained with top European academies.",
+                experience: "12 years",
+                credentials: "UEFA A License, Sports Science Degree",
+                specialties: ["Shooting technique", "Positioning", "Finishing under pressure", "Set pieces"]
+            },
+            {
+                name: "Marcus Johnson",
+                specialty: "Defensive Skills",
+                rating: 4,
+                reviews: 28,
+                price: 38,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Center-back with professional playing experience. Focuses on defensive positioning, tackling, and reading the game. Passionate about developing young defenders.",
+                experience: "8 years",
+                credentials: "USSF A License, Psychology Degree",
+                specialties: ["Defensive positioning", "Tackling techniques", "Game reading", "Aerial duels"]
+            },
+            {
+                name: "Sarah Martinez",
+                specialty: "Goalkeeping",
+                rating: 5,
+                reviews: 65,
+                price: 52,
+                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Former collegiate goalkeeper and current goalkeeper coach. Specializes in shot-stopping, distribution, and commanding the penalty area.",
+                experience: "9 years",
+                credentials: "NSCAA Level 3 Goalkeeping, Sports Medicine Background",
+                specialties: ["Shot-stopping", "Positioning", "Distribution", "Cross collection"]
+            },
+            {
+                name: "David Chen",
+                specialty: "Fitness & Conditioning",
+                rating: 5,
+                reviews: 37,
+                price: 42,
+                image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Strength and conditioning specialist focused on football performance. Helps players improve speed, agility, and endurance while reducing injury risk.",
+                experience: "7 years",
+                credentials: "CSCS, Degree in Exercise Science",
+                specialties: ["Speed training", "Agility drills", "Endurance", "Injury prevention"]
+            },
+            {
+                name: "Emma Wright",
+                specialty: "Tactics & Strategy",
+                rating: 4,
+                reviews: 51,
+                price: 48,
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Tactical analyst and coach with experience at academy level. Focuses on game intelligence, formation understanding, and decision-making.",
+                experience: "6 years",
+                credentials: "UEFA B License, Degree in Sports Management",
+                specialties: ["Game analysis", "Formation understanding", "Decision-making", "Positional play"]
+            },
+            {
+                name: "Michael Torres",
+                specialty: "Striking & Ball Control",
+                rating: 4.5,
+                reviews: 29,
+                price: 40,
+                image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                bio: "Technical skills coach specializing in ball mastery, dribbling, and finishing. Works with players of all ages to improve technical foundation.",
+                experience: "5 years",
+                credentials: "USSF B License, Youth Development Specialist",
+                specialties: ["Ball control", "Dribbling", "1v1 situations", "Finishing techniques"]
+            }
+        ];
+
+        // DOM Elements
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const coachCards = document.querySelectorAll('.coach-card');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const findCoachHeroBtn = document.getElementById('findCoachHeroBtn');
+        const becomeCoachHeroBtn = document.getElementById('becomeCoachHeroBtn');
+        const ctaFindCoachBtn = document.getElementById('ctaFindCoachBtn');
+        const bookNowButtons = document.querySelectorAll('.book-now');
+        const viewProfileButtons = document.querySelectorAll('.view-profile');
+        const modals = document.querySelectorAll('.modal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const coachNameElement = document.getElementById('coachName');
+        const proceedToPaymentBtn = document.getElementById('proceedToPayment');
+        const profileContent = document.getElementById('profileContent');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const confirmPaymentBtn = document.getElementById('confirmPayment');
+        const coachApplicationForm = document.getElementById('coachApplicationForm');
+        const paymentCoachName = document.getElementById('paymentCoachName');
+        const paymentDateTime = document.getElementById('paymentDateTime');
+        const paymentSessionType = document.getElementById('paymentSessionType');
+        const paymentAmount = document.getElementById('paymentAmount');
+
+        // Current selected coach and booking details
+        let selectedCoach = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedSessionType = "individual";
+        let selectedPaymentMethod = null;
+
+        // Initialize calendar
+        function initCalendar() {
+            const calendar = document.querySelector('.booking-calendar');
+            // Clear existing days (except headers)
+            while (calendar.children.length > 7) {
+                calendar.removeChild(calendar.lastChild);
+            }
+            
+            // September 2023 starts on Friday (0=Sun, 1=Mon, ... 5=Fri, 6=Sat)
+            const startDay = 5;
+            const daysInMonth = 30;
+            
+            // Add empty cells for days before the start of the month
+            for (let i = 0; i < startDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-cell', 'unavailable');
+                calendar.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-cell');
+                dayCell.textContent = i;
+                
+                // Mark some random days as unavailable for demo purposes
+                if (Math.random() < 0.2) {
+                    dayCell.classList.add('unavailable');
+                } else {
+                    dayCell.addEventListener('click', () => selectDate(dayCell, i));
+                }
+                
+                calendar.appendChild(dayCell);
+            }
+        }
+
+        // Select date function
+        function selectDate(element, day) {
+            // Remove selected class from all cells
+            document.querySelectorAll('.calendar-cell').forEach(cell => {
+                cell.classList.remove('selected');
             });
             
-            // Search functionality
-            const searchBtn = document.querySelector('.search-btn');
-            searchBtn.addEventListener('click', function() {
-                const searchTerm = document.querySelector('.search-input').value;
-                console.log('Searching for: ' + searchTerm);
-                // In a real implementation, this would trigger a search
-            });
-            
-            // Coach card buttons
-            const viewProfileButtons = document.querySelectorAll('.coach-actions .btn-outline');
-            viewProfileButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const coachName = this.closest('.coach-card').querySelector('.coach-name').textContent;
-                    console.log('Viewing profile of: ' + coachName);
-                    // In a real implementation, this would navigate to the coach's profile
+            // Add selected class to clicked cell
+            element.classList.add('selected');
+            selectedDate = `September ${day}, 2023`;
+        }
+
+        // Select time function
+        function setupTimeSlots() {
+            const timeSlots = document.querySelectorAll('.time-slot:not(.unavailable)');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', () => {
+                    // Remove selected class from all time slots
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    
+                    // Add selected class to clicked slot
+                    slot.classList.add('selected');
+                    selectedTime = slot.getAttribute('data-time');
                 });
             });
+        }
+
+        // Show notification function
+        function showNotification(message, isSuccess = true) {
+            notificationText.textContent = message;
+            notification.style.backgroundColor = isSuccess ? 'var(--success)' : 'var(--danger)';
+            notification.classList.add('show');
             
-            const bookNowButtons = document.querySelectorAll('.coach-actions .btn-primary');
-            bookNowButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const coachName = this.closest('.coach-card').querySelector('.coach-name').textContent;
-                    console.log('Booking session with: ' + coachName);
-                    // In a real implementation, this would open a booking modal
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Filter coaches based on specialty
+        function filterCoaches(specialty) {
+            coachCards.forEach(card => {
+                if (specialty === 'all' || card.getAttribute('data-specialty') === specialty) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Search coaches by name
+        function searchCoaches(query) {
+            const normalizedQuery = query.toLowerCase().trim();
+            
+            coachCards.forEach(card => {
+                const coachName = card.getAttribute('data-name').toLowerCase();
+                const specialty = card.getAttribute('data-specialty');
+                
+                if (coachName.includes(normalizedQuery) || specialty.includes(normalizedQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Open modal function
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal function
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Show coach profile
+        function showCoachProfile(coachName) {
+            const coach = coaches.find(c => c.name === coachName);
+            if (!coach) return;
+            
+            profileContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="width: 150px; height: 150px; border-radius: 50%; background-image: url('${coach.image}'); background-size: cover; background-position: center; margin-bottom: 20px;"></div>
+                    <h2>${coach.name}</h2>
+                    <p style="color: var(--secondary); font-weight: 500; margin-bottom: 20px;">${coach.specialty}</p>
+                </div>
+                
+                <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700;">${coach.rating}/5</div>
+                        <div>Rating</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700;">${coach.reviews}</div>
+                        <div>Reviews</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700;">${coach.experience}</div>
+                        <div>Experience</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin: 20px 0 10px;">About Me</h3>
+                <p style="margin-bottom: 20px;">${coach.bio}</p>
+                
+                <h3 style="margin: 20px 0 10px;">Credentials</h3>
+                <p style="margin-bottom: 20px;">${coach.credentials}</p>
+                
+                <h3 style="margin: 20px 0 10px;">Specialties</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    ${coach.specialties.map(spec => `<li>${spec}</li>`).join('')}
+                </ul>
+                
+                <button class="btn btn-primary" style="width: 100%;" onclick="openBookingModal('${coach.name}')">Book a Session</button>
+            `;
+            
+            openModal('profileModal');
+        }
+
+        // Open booking modal for a specific coach
+        function openBookingModal(coachName) {
+            selectedCoach = coachName;
+            coachNameElement.textContent = coachName;
+            initCalendar();
+            setupTimeSlots();
+            
+            // Reset session type
+            document.getElementById('sessionType').value = 'individual';
+            selectedSessionType = 'individual';
+            
+            openModal('bookingModal');
+            
+            // Close profile modal if open
+            closeModal('profileModal');
+        }
+
+        // Setup payment method selection
+        function setupPaymentMethods() {
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', () => {
+                    paymentMethods.forEach(m => m.classList.remove('selected'));
+                    method.classList.add('selected');
+                    selectedPaymentMethod = method.getAttribute('data-method');
+                    
+                    // Show card form only if card is selected
+                    if (selectedPaymentMethod === 'card') {
+                        document.getElementById('cardPaymentForm').style.display = 'block';
+                    } else {
+                        document.getElementById('cardPaymentForm').style.display = 'none';
+                    }
                 });
+            });
+        }
+
+        // Event Listeners
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                filterCoaches(button.getAttribute('data-filter'));
             });
         });
+
+        searchBtn.addEventListener('click', () => {
+            searchCoaches(searchInput.value);
+        });
+
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchCoaches(searchInput.value);
+            }
+        });
+
+        loginBtn.addEventListener('click', () => {
+            openModal('loginModal');
+        });
+
+        signupBtn.addEventListener('click', () => {
+            openModal('signupModal');
+        });
+
+        findCoachHeroBtn.addEventListener('click', () => {
+            document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        becomeCoachHeroBtn.addEventListener('click', () => {
+            openModal('becomeCoachModal');
+        });
+
+        ctaFindCoachBtn.addEventListener('click', () => {
+            document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        bookNowButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                openBookingModal(button.getAttribute('data-coach'));
+            });
+        });
+
+        viewProfileButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                showCoachProfile(button.getAttribute('data-coach'));
+            });
+        });
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal');
+                closeModal(modalId);
+            });
+        });
+
+        // Close modal when clicking outside content
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+
+        switchToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal('loginModal');
+            openModal('signupModal');
+        });
+
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal('signupModal');
+            openModal('loginModal');
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            closeModal('loginModal');
+            showNotification('Login successful!', true);
+        });
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            closeModal('signupModal');
+            showNotification('Account created successfully!', true);
+        });
+
+        // Session type change
+        document.getElementById('sessionType').addEventListener('change', (e) => {
+            selectedSessionType = e.target.value;
+        });
+
+        proceedToPaymentBtn.addEventListener('click', () => {
+            if (!selectedDate || !selectedTime) {
+                showNotification('Please select both date and time', false);
+                return;
+            }
+            
+            // Get coach price
+            const coach = coaches.find(c => c.name === selectedCoach);
+            if (!coach) return;
+            
+            // Calculate price based on session type
+            let price = coach.price;
+            if (selectedSessionType === 'group') price *= 1.5;
+            if (selectedSessionType === 'intensive') price *= 2;
+            
+            // Update payment details
+            paymentCoachName.textContent = selectedCoach;
+            paymentDateTime.textContent = `${selectedDate} at ${selectedTime}`;
+            paymentSessionType.textContent = document.getElementById('sessionType').options[document.getElementById('sessionType').selectedIndex].text;
+            paymentAmount.textContent = price.toFixed(2);
+            
+            // Close booking modal and open payment modal
+            closeModal('bookingModal');
+            openModal('paymentModal');
+        });
+
+        confirmPaymentBtn.addEventListener('click', () => {
+            if (!selectedPaymentMethod) {
+                showNotification('Please select a payment method', false);
+                return;
+            }
+            
+            if (selectedPaymentMethod === 'card') {
+                // Validate card details
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cardExpiry = document.getElementById('cardExpiry').value;
+                const cardCVC = document.getElementById('cardCVC').value;
+                const cardName = document.getElementById('cardName').value;
+                
+                if (!cardNumber || !cardExpiry || !cardCVC || !cardName) {
+                    showNotification('Please fill all card details', false);
+                    return;
+                }
+            }
+            
+            closeModal('paymentModal');
+            showNotification('Payment successful! Your session has been booked.', true);
+            
+            // Reset all selections
+            selectedCoach = null;
+            selectedDate = null;
+            selectedTime = null;
+            selectedSessionType = "individual";
+            selectedPaymentMethod = null;
+        });
+
+        coachApplicationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            closeModal('becomeCoachModal');
+            showNotification('Application submitted successfully! We will review your application and contact you soon.', true);
+        });
+
+        // Initialize the page
+        initCalendar();
+        setupTimeSlots();
+        setupPaymentMethods();
     </script>
 </body>
 </html>
